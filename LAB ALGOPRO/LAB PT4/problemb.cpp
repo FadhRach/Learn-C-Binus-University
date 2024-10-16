@@ -7,17 +7,26 @@ int main() {
 	int N;
 	scanf("%d", &N);
 	int matrix [N][N];
+	int transpose[N][N];
 	for(int i = 0; i < N; i++){
 		for(int j = 0; j < N; j++){
-			do{
-				scanf("%d", &matrix[i][j]); getchar();
-			} while(matrix[i][j] != 0 && matrix[i][j] != 1);
+			scanf("%d", &matrix[i][j]); getchar();
 		}
 	}
 	
 	for(int i = 0; i < N; i++){
 		for(int j = 0; j < N; j++){
-			printf("%d ", matrix[j][i]);
+			transpose[j][i] = matrix[i][j];
+		}
+	}
+	
+	for(int i = 0; i < N; i++){
+		for(int j = 0; j < N; j++){
+			printf("%d", transpose[i][j]);
+			if(j == N -1){
+				continue;
+			}
+			printf(" ");
 		}
 		printf("\n");
 	}

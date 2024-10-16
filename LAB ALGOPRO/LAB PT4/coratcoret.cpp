@@ -17,25 +17,32 @@ int main() {
 //		printf("bukan angka 1, 2, 3");
 //	}
 
-	int choice;
-	puts("1. Play");
-	puts("2. Menu");
-	puts("3. Exit");
-	puts("=========================");
+//	int choice;
+//	puts("1. Play");
+//	puts("2. Menu");
+//	puts("3. Exit");
+//	puts("=========================");
+//	
+//	printf("Masukkan Pilihan: ");
+//	scanf("%d", &choice);
+//	
+//	switch(choice){
+//		case 1:
+//			printf("Playing game");
+//			break;
+//		case 2:
+//			printf("Menu game");
+//			break;
+//		case 3:
+//			printf("Exit...");
+//			break;		
+//	}
+
+//	char str[] = "Welcome to Binus";
+	char *str  = "Welcome to Binus";
 	
-	printf("Masukkan Pilihan: ");
-	scanf("%d", &choice);
+	printf("%s", str);
+
 	
-	switch(choice){
-		case 1:
-			printf("Playing game");
-			break;
-		case 2:
-			printf("Menu game");
-			break;
-		case 3:
-			printf("Exit...");
-			break;		
-	}
 	return 0;
 }
