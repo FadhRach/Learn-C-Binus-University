@@ -2,7 +2,6 @@
 
 int main() {
     int T;
-    // Input jumlah testcase
     scanf("%d", &T);
 
     for (int t = 1; t <= T; t++) {

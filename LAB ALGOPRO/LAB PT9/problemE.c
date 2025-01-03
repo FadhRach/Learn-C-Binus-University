@@ -2,15 +2,14 @@
 #include <string.h>
 
 typedef struct {
-    char names[200][11]; // Array untuk menyimpan nama dengan maksimal 200 anggota per kelompok
-    int count;           // Menghitung jumlah anggota dalam kelompok
+    char names[200][11];
+    int count;          
 } Group;
 
 int main() {
     int T;
     scanf("%d", &T);
 
-    // Proses setiap test case
     for (int t = 0; t < T; t++) {
         int N;
         scanf("%d", &N);

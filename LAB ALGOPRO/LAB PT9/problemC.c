@@ -10,7 +10,8 @@ void bubbleSort(Pasien arr[], int size) {
     for (int i = 0; i < size - 1; i++) {
         for (int j = 0; j < size - 1 - i; j++) {
             if (arr[j].urgensi < arr[j + 1].urgensi || 
-               (arr[j].urgensi == arr[j + 1].urgensi && strcmp(arr[j].nama, arr[j + 1].nama) > 0)) {
+               (arr[j].urgensi == arr[j + 1].urgensi && 
+               strcmp(arr[j].nama, arr[j + 1].nama) > 0)) {
                 Pasien temp = arr[j];
                 arr[j] = arr[j + 1];
                 arr[j + 1] = temp;

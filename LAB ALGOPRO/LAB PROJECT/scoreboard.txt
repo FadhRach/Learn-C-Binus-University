@@ -1,0 +1,5 @@
+fadh: 110
+reiki: 310
+devin:10
+farrel:100
+reiki: 100
