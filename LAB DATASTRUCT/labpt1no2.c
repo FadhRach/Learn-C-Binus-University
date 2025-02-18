@@ -23,7 +23,7 @@ int maxProfit(int harga_saham[], int ukuran) {
 int main() {
     int ukuran;
 
-    printf("Masukkan jumlah harga saham: ");
+    printf("Masukkan jumlah saham: ");
     scanf("%d", &ukuran);
 
     if (ukuran <= 0) {

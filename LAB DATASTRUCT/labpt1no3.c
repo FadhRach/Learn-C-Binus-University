@@ -34,6 +34,12 @@ int main() {
     awalanPanjang(kamus, N, hasil);
     printf("Awalan terpanjang dari input: \"%s\"\n", hasil);
 
+    return 0;
+}
+
+
+
+
     // Dummy data
     // char kamus1[][100] = {"bunga", "burung", "bumi"};
     // char kamus2[][100] = {"kucing", "anjing", "kelinci"};
@@ -42,6 +48,3 @@ int main() {
     // printf("Awalan terpanjang (dummy 1): \"%s\"\n", hasil);
     // awalanPanjang(kamus2, 3, hasil);
     // printf("Awalan terpanjang (dummy 2): \"%s\"\n", hasil);
-
-    return 0;
-}
