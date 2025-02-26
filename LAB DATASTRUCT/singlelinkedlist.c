@@ -120,6 +120,49 @@ void popAll(){
     }
 }
 
+void removeDuplicates(){
+    struct Data *curr = head;
+    while(curr != NULL && curr->next != NULL){
+        struct Data *runner = curr;
+        while(runner->next != NULL){
+            if(curr->value == runner->next->value){
+                struct Data *temp = runner->next;
+                runner->next = runner->next->next;
+                if(temp == tail){
+                    tail = runner;
+                }
+                free(temp);
+            } else{
+                runner = runner->next;
+            }
+        }
+        curr = curr->next;
+    }
+}
+
+
+int isPalindrome(){
+    struct Data *slow = head, *fast = head, *prev = NULL, *next = NULL;
+    while(fast != NULL && fast->next != NULL){
+        fast = fast->next->next;
+        next = slow->next;
+        slow->next = prev;
+        prev = slow;
+        slow = next;
+    }
+    if(fast != NULL){
+        slow = slow->next;
+    }
+    while(slow != NULL){
+        if(slow->value != prev->value){
+            return 0;
+        }
+        slow = slow->next;
+        prev = prev->next;
+    }
+    return 1;
+}
+
 void printAll(){
     if(head == NULL){
         printf("No data!\n");
@@ -138,12 +181,13 @@ void printAll(){
 
 int main(){
 
-    pushMid(3);
-    pushMid(8);
-    pushMid(5);
-    pushMid(6);
-    pushHead(10);
-    pushTail(2);
+    // pushMid(55);
+    // pushMid(88);
+    // pushMid(55);
+    // pushMid(66);
+    // pushMid(66);
+    pushHead(101);
+    pushTail(101);
     printAll();
     
 
@@ -157,7 +201,15 @@ int main(){
     }
     free(deleted);
 
-    popAll();
+    // removeDuplicates();
+    printAll();
+    
+    if(isPalindrome()){
+        printf("List is a palindrome\n");
+    } else {
+        printf("List is not a palindrome\n");
+    }
+
     printAll();
 
     return 0;
