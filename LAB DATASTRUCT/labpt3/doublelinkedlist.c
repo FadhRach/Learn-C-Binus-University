@@ -177,5 +177,3 @@ void toggle_circular() {
         printf("List is now circular.\n");
     }
 }
-
-// finish
