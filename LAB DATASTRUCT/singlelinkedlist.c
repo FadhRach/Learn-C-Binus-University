@@ -140,29 +140,6 @@ void removeDuplicates(){
     }
 }
 
-
-int isPalindrome(){
-    struct Data *slow = head, *fast = head, *prev = NULL, *next = NULL;
-    while(fast != NULL && fast->next != NULL){
-        fast = fast->next->next;
-        next = slow->next;
-        slow->next = prev;
-        prev = slow;
-        slow = next;
-    }
-    if(fast != NULL){
-        slow = slow->next;
-    }
-    while(slow != NULL){
-        if(slow->value != prev->value){
-            return 0;
-        }
-        slow = slow->next;
-        prev = prev->next;
-    }
-    return 1;
-}
-
 void printAll(){
     if(head == NULL){
         printf("No data!\n");
@@ -179,18 +156,66 @@ void printAll(){
     printf("\n");
 }
 
+int isPalindromeList() {
+    if (head == NULL || head->next == NULL) return 1; // Kosong atau 1 elemen adalah palindrome
+
+    // Langkah 1: Temukan tengah dengan slow dan fast pointer
+    struct Data *slow = head;
+    struct Data *fast = head;
+    struct Data *prev_slow = NULL; // Untuk menyimpan node sebelum slow
+    
+    while (fast != NULL && fast->next != NULL) {
+        fast = fast->next->next; // Bergerak 2 langkah
+        prev_slow = slow;        // Simpan sebelumnya
+        slow = slow->next;       // Bergerak 1 langkah
+    }
+    
+    // Jika panjang ganjil, tengah adalah slow, lewati node tengah
+    struct Data *mid = slow;
+    prev_slow->next = NULL; // Pisahkan bagian kiri
+    
+    // Langkah 2: Balikkan bagian kanan
+    struct Data *prev = NULL;
+    struct Data *curr = mid;
+    struct Data *next = NULL;
+    while (curr != NULL) {
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    struct Data *right = prev; // Head dari bagian kanan yang dibalik
+    
+    // Langkah 3: Bandingkan kiri dan kanan
+    struct Data *left = head;
+    while (left != NULL && right != NULL) {
+        if (left->value != right->value) {
+            return 0; // Bukan palindrome
+        }
+        left = left->next;
+        right = right->next;
+    }
+    
+    return 1; // Palindrome
+}
+
 int main(){
 
-    // pushMid(55);
-    // pushMid(88);
-    // pushMid(55);
-    // pushMid(66);
-    // pushMid(66);
-    pushHead(101);
-    pushTail(101);
+    pushTail(1);
+    pushTail(2);
+    pushTail(3);
+    pushTail(3);
+    pushTail(2);
+    pushTail(1);
     printAll();
     
+    if (isPalindromeList()) {
+        printf("Linked list adalah palindrome\n");
+    } else {
+        printf("Linked list bukan palindrome\n");
+    }
 
+    printAll();
 
     struct Data* deleted = popMid(7);
 
@@ -204,11 +229,6 @@ int main(){
     // removeDuplicates();
     printAll();
     
-    if(isPalindrome()){
-        printf("List is a palindrome\n");
-    } else {
-        printf("List is not a palindrome\n");
-    }
 
     printAll();
 

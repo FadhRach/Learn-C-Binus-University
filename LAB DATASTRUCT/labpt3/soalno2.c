@@ -1,103 +1,232 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Struktur untuk node linked list
-struct Node {
-    int data;
-    struct Node* next;
-};
+struct Data {
+    int value;
+    struct Data *next;
+}*head = NULL, *tail = NULL;
 
-// Fungsi untuk membuat node baru
-struct Node* newNode(int data) {
-    struct Node* node = (struct Node*)malloc(sizeof(struct Node));
-    node->data = data;
+struct Data* newNode(int value){
+    struct Data* node = (struct Data*)malloc(sizeof(struct Data));
+    node->value = value;
     node->next = NULL;
     return node;
 }
 
-// Fungsi untuk membalikkan linked list
-struct Node* reverseList(struct Node* head) {
-    struct Node *prev = NULL, *current = head, *next = NULL;
-    while (current != NULL) {
-        next = current->next;
-        current->next = prev;
-        prev = current;
-        current = next;
+void pushHead(int value){
+    struct Data* node = newNode(value);
+    if(head == NULL){
+        head = tail = node;
+    } else {
+        node->next = head;
+        head = node;
     }
-    return prev;
 }
 
-// Fungsi untuk mengecek apakah linked list palindrome
-int isPalindrome(struct Node* head) {
-    if (head == NULL || head->next == NULL) {
-        return 1; // List kosong atau satu elemen adalah palindrome
+void pushTail(int value){
+    struct Data* node = newNode(value);
+    if(head == NULL){
+        head = tail = node;
+    } else if(head->value){
+        tail->next = node;
+        tail = node;
     }
+}
 
-    // Langkah 1: Temukan tengah list dengan slow dan fast pointer
-    struct Node *slow = head, *fast = head, *prev_slow = head;
-    while (fast != NULL && fast->next != NULL) {
-        fast = fast->next->next;
-        prev_slow = slow;
-        slow = slow->next;
-    }
-
-    // Pisahkan list menjadi dua bagian
-    prev_slow->next = NULL;
-    struct Node* secondHalf = slow;
-
-    // Langkah 2: Balikkan bagian kedua
-    secondHalf = reverseList(secondHalf);
-
-    // Langkah 3: Bandingkan bagian pertama dan kedua
-    struct Node* firstHalf = head;
-    while (firstHalf != NULL && secondHalf != NULL) {
-        if (firstHalf->data != secondHalf->data) {
-            return 0; // Bukan palindrome
+void pushMid(int value){
+    struct Data* node = newNode(value);
+    if(head == NULL){
+        head = tail = node;
+    } else if(value < head->value){
+        pushHead(value);
+    } else if(value >= tail->value){
+        pushTail(value);
+    } else {
+        struct Data *curr = head;
+        while(curr->next != NULL && curr->next->value < value){
+            curr = curr->next;
         }
-        firstHalf = firstHalf->next;
-        secondHalf = secondHalf->next;
+        node->next = curr->next;
+        curr->next = node;
     }
-
-    return 1; // Palindrome
 }
 
-// Fungsi untuk mencetak linked list (opsional untuk debugging)
-void printList(struct Node* head) {
-    struct Node* temp = head;
-    while (temp != NULL) {
-        printf("%d", temp->data);
-        if (temp->next != NULL) printf("->");
-        temp = temp->next;
+struct Data* popHead(){
+    if(head == NULL){
+        return NULL;
+    } else{
+        struct Data* temp = head;
+        if(head == tail){
+            head = tail = NULL;
+        } else{
+            head = head->next;
+        }     
+        return temp;
     }
+}
+
+struct Data* popTail(){
+    if(head == NULL){
+        return NULL;
+    } else{
+        if(head == tail){
+            struct Data *temp = head;
+            head = tail = NULL;
+            return temp;
+        } else{
+            struct Data *curr = head;
+            while(curr->next != tail){
+                curr = curr->next;
+            }
+
+            struct Data *temp = tail;
+            curr->next = NULL;
+            tail = curr;
+            return temp;
+        }
+        
+    }
+}
+
+struct Data*popMid(int value){
+    if(head == NULL){
+        return NULL;
+    } else{
+        if(head->value == value){
+            popHead();
+        } else if(tail->value == value){
+            popTail();
+        } else{
+            struct Data *curr = head;
+            while(curr->next != NULL && curr->next->value != value){
+                curr = curr->next;
+            }
+
+            if(curr->next == NULL ){
+                return NULL;
+            }
+
+            struct Data *temp = curr->next;
+            curr->next = temp->next;
+            return temp;
+        }
+        
+    }
+}
+
+void popAll(){
+    while(head != NULL){
+        popHead();
+    }
+}
+
+void removeDuplicates(){
+    struct Data *curr = head;
+    while(curr != NULL && curr->next != NULL){
+        struct Data *runner = curr;
+        while(runner->next != NULL){
+            if(curr->value == runner->next->value){
+                struct Data *temp = runner->next;
+                runner->next = runner->next->next;
+                if(temp == tail){
+                    tail = runner;
+                }
+                free(temp);
+            } else{
+                runner = runner->next;
+            }
+        }
+        curr = curr->next;
+    }
+}
+
+void printAll(){
+    if(head == NULL){
+        printf("No data!\n");
+        return;
+    }
+
+    struct Data* curr = head;
+
+    while(curr != NULL){
+        printf("%d->", curr->value);
+        curr = curr->next;
+    }
+
     printf("\n");
 }
 
-int main() {
-    // Membuat linked list: 1->2->1->1->2->1
-    struct Node* head = newNode(1);
-    head->next = newNode(2);
-    head->next->next = newNode(1);
-    head->next->next->next = newNode(1);
-    head->next->next->next->next = newNode(2);
-    head->next->next->next->next->next = newNode(2);
+int isPalindromeList() {
+    if (head == NULL || head->next == NULL) return 1;
 
-    // Cetak linked list (opsional)
-    printf("Linked List: ");
-    printList(head);
+    struct Data *slow = head;
+    struct Data *fast = head;
+    struct Data *prev_slow = NULL;
+    
+    while (fast != NULL && fast->next != NULL) {
+        fast = fast->next->next;
+        prev_slow = slow;
+        slow = slow->next; 
+    }
+    
+    struct Data *mid = slow;
+    prev_slow->next = NULL;
+    
+    struct Data *prev = NULL;
+    struct Data *curr = mid;
+    struct Data *next = NULL;
+    while (curr != NULL) {
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    struct Data *right = prev;
+    
+    struct Data *left = head;
+    while (left != NULL && right != NULL) {
+        if (left->value != right->value) {
+            return 0;
+        }
+        left = left->next;
+        right = right->next;
+    }
+    
+    return 1;
+}
 
-    // Cek apakah palindrome
-    if (isPalindrome(head)) {
-        printf("Output: palindrome\n");
+int main(){
+
+    pushTail(1);
+    pushTail(2);
+    pushTail(4);
+    pushTail(10);
+    pushTail(9);
+    pushTail(4);
+    pushTail(5);
+    pushTail(1);
+    printAll();
+    
+    if (isPalindromeList()) {
+        printf("Linked list adalah palindrome\n");
     } else {
-        printf("Output: bukan palindrome\n");
+        printf("Linked list bukan palindrome\n");
     }
 
-    // Bersihkan memori (opsional, untuk praktek yang baik)
-    while (head != NULL) {
-        struct Node* temp = head;
-        head = head->next;
-        free(temp);
-    }
+    printAll();
+
+    // struct Data* deleted = popMid(7);
+
+    // if(deleted == NULL){
+    //     printf("No data deleted\n");
+    // }else{
+    //     printf("Deleted %d\n", deleted->value);
+    // }
+    // free(deleted);
+
+    // // removeDuplicates();
+    // printAll();
+    
 
     return 0;
 }
