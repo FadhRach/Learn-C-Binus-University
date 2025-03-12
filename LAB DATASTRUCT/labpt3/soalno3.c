@@ -13,7 +13,7 @@ struct ListNode* createNode(int val) {
     return newNode;
 }
 
-struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2) {
+struct ListNode* merge(struct ListNode* list1, struct ListNode* list2) {
     if (!list1) return list2;
     if (!list2) return list1;
     
@@ -53,22 +53,40 @@ void printList(struct ListNode* head) {
     printf("\n");
 }
 
-int main() {
-    struct ListNode* list1 = createNode(1);
-    list1->next = createNode(2);
-    list1->next->next = createNode(4);
-    list1->next->next->next = createNode(10);
-    printList(list1);
+struct ListNode* createList(int n) {
+    struct ListNode* head = NULL;
+    struct ListNode* tail = NULL;
     
-    struct ListNode* list2 = createNode(1);
-    list2->next = createNode(8);
-    list2->next->next = createNode(6);
-    printList(list2);
-    
-    struct ListNode* mergedList = mergeTwoLists(list1, list2);
-    
+    for (int i = 0; i < n; i++) {
+        int val;
+        printf("Masukkan elemen ke-%d: ", i + 1);
+        scanf("%d", &val);
+        
+        struct ListNode* newNode = createNode(val);
+        if (!head) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            tail->next = newNode;
+            tail = newNode;
+        }
+    }
+    return head;
+}
 
-    // Mencetak hasil
+int main() {
+    int n1, n2;
+    
+    printf("Masukkan jumlah elemen dalam list1: ");
+    scanf("%d", &n1);
+    struct ListNode* list1 = createList(n1);
+    
+    printf("Masukkan jumlah elemen dalam list2: ");
+    scanf("%d", &n2);
+    struct ListNode* list2 = createList(n2);
+    
+    struct ListNode* mergedList = merge(list1, list2);
+    
     printf("Merged Linked List: ");
     printList(mergedList);
     
